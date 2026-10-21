@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#0b6e4f"><title>Kept — finishing bank link</title>
+<link rel="stylesheet" href="styles.css"></head>
+<body><main id="view" style="padding-top:40px">
+  <div class="card" style="text-align:center"><div style="font-size:44px">🏦</div><h2 style="margin:8px 0">Finishing your bank link…</h2>
+  <p class="muted" id="msg">Your bank sent you back to Kept. One moment.</p>
+  <a class="btn secondary" href="./#settings" id="back" hidden>Back to Kept</a></div>
+</main>
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<script>
+/* Plaid OAuth redirect target (REDIRECT_URI). Resumes Plaid Link with the same link token, then hands the
+   one-time public token back to the app (which exchanges it with the Kept bank server). */
+(function () {
+  const msg = t => { document.getElementById('msg').textContent = t; document.getElementById('back').hidden = false; };
+  const token = localStorage.getItem('kept.linkToken');
+  if (!token) return msg('This link has expired. Go back to Kept and tap “Link your bank” again.');
+  if (!window.Plaid) return msg("Couldn't load Plaid. Check your internet and try again from Kept.");
+  const handler = Plaid.create({
+    token, receivedRedirectUri: window.location.href,
+    onSuccess: (publicToken, meta) => {
+      localStorage.removeItem('kept.linkToken');
+      localStorage.setItem('kept.oauthResult', JSON.stringify({ publicToken, meta: { institution: meta.institution, accounts: (meta.accounts || []).map(a => ({ id: a.id, name: a.name, mask: a.mask })) } }));
+      location.replace('./#find');
+    },
+    onExit: err => { localStorage.removeItem('kept.linkToken'); location.replace('./#settings'); },
+  });
+  handler.open();
+})();
+</script></body></html>

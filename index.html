@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kept</title>
+<meta name="description" content="Personal savings tracker">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b6e4f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Kept">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img src="icons/icon-192.png" alt=""><span id="appName">Kept</span></div>
+  <div class="today" id="todayLabel"></div>
+</header>
+<main id="view" aria-live="polite"></main>
+<nav class="tabbar" id="tabbar">
+  <a href="#home" data-tab="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
+  <a href="#subs" data-tab="subs"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="2"/></svg><span>Cancelled</span></a>
+  <a href="#receipts" data-tab="receipts"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/></svg><span>Receipts</span></a>
+  <a href="#settings" data-tab="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg><span>Settings</span></a>
+</nav>
+<div class="sheet-backdrop" id="backdrop" hidden></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" hidden></section>
+<div class="toast" id="toast" hidden></div>
+<!-- File inputs live outside #view so a re-render (e.g. when Android returns from the file picker) can't destroy them mid-pick. No accept filter: Android mislabels CSV/OFX types. -->
+<input type="file" id="stmtFile" multiple hidden>
+<input type="file" id="importFile" hidden>
+<script src="core.js"></script>
+<script src="cancel-directory.js"></script>
+<script src="statement.js"></script>
+<script src="config.js"></script>
+<script src="demo-bank.js"></script>
+<script src="bank.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
